@@ -1,0 +1,55 @@
+# Render.com Blueprint for ConvertX
+# This file defines all services for automatic deployment
+
+services:
+  # Backend API Service
+  - type: web
+    name: convertx-api
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 300 "app.api:create_app()"
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: UPLOAD_FOLDER
+        value: /tmp/uploads
+      - key: OCR_ENGINE
+        value: surya
+      - key: REDIS_HOST
+        sync: false  # Set manually in Render dashboard
+      - key: REDIS_PORT
+        sync: false  # Set manually in Render dashboard
+      - key: REDIS_PASSWORD
+        sync: false  # Set manually in Render dashboard
+
+  # Celery Worker Service
+  - type: worker
+    name: convertx-celery
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A app.celery_app worker --loglevel=info --concurrency=1
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: UPLOAD_FOLDER
+        value: /tmp/uploads
+      - key: OCR_ENGINE
+        value: surya
+      - key: REDIS_HOST
+        sync: false  # Set manually in Render dashboard
+      - key: REDIS_PORT
+        sync: false  # Set manually in Render dashboard
+      - key: REDIS_PASSWORD
+        sync: false  # Set manually in Render dashboard

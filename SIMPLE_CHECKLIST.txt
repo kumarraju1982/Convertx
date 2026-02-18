@@ -1,0 +1,115 @@
+═══════════════════════════════════════════════════════════════
+  CONVERTX - FREE DEPLOYMENT CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+STEP 1: PUSH TO GITHUB (10 min)
+═══════════════════════════════════════════════════════════════
+[ ] Run: git init
+[ ] Run: git add .
+[ ] Run: git commit -m "Ready for deployment"
+[ ] Go to: https://github.com/new
+[ ] Create repository named: convertx
+[ ] Run: git remote add origin https://github.com/YOUR_USERNAME/convertx.git
+[ ] Run: git branch -M main
+[ ] Run: git push -u origin main
+[ ] ✓ Code is on GitHub!
+
+STEP 2: CREATE REDIS DATABASE (5 min)
+═══════════════════════════════════════════════════════════════
+[ ] Go to: https://redis.com/try-free/
+[ ] Sign up with email or Google
+[ ] Create database: convertx-redis
+[ ] Plan: FREE (30MB)
+[ ] Region: us-east-1 (or closest)
+[ ] Copy these values:
+    REDIS_HOST: _________________________________
+    REDIS_PORT: _________________________________
+    REDIS_PASSWORD: _____________________________
+[ ] ✓ Redis is ready!
+
+STEP 3A: DEPLOY BACKEND API (10 min)
+═══════════════════════════════════════════════════════════════
+[ ] Go to: https://render.com
+[ ] Sign up with GitHub
+[ ] Click: New+ → Web Service
+[ ] Connect: convertx repository
+[ ] Name: convertx-api
+[ ] Root Directory: backend
+[ ] Build: pip install -r requirements.txt
+[ ] Start: gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 300 "app.api:create_app()"
+[ ] Instance: FREE
+[ ] Add environment variables:
+    [ ] FLASK_ENV = production
+    [ ] PYTHON_VERSION = 3.11.0
+    [ ] UPLOAD_FOLDER = /tmp/uploads
+    [ ] OCR_ENGINE = surya
+    [ ] REDIS_HOST = [from Step 2]
+    [ ] REDIS_PORT = [from Step 2]
+    [ ] REDIS_PASSWORD = [from Step 2]
+    [ ] REDIS_DB = 0
+[ ] Click: Create Web Service
+[ ] Wait 5-10 minutes
+[ ] Copy API URL: _________________________________
+[ ] ✓ Backend API is live!
+
+STEP 3B: DEPLOY CELERY WORKER (5 min)
+═══════════════════════════════════════════════════════════════
+[ ] Click: New+ → Background Worker
+[ ] Connect: convertx repository
+[ ] Name: convertx-celery
+[ ] Root Directory: backend
+[ ] Build: pip install -r requirements.txt
+[ ] Start: celery -A app.celery_app worker --loglevel=info --concurrency=1
+[ ] Instance: FREE
+[ ] Add same 8 environment variables as Step 3A
+[ ] Click: Create Background Worker
+[ ] Wait 5-10 minutes
+[ ] ✓ Celery worker is running!
+
+STEP 4: DEPLOY FRONTEND (5 min)
+═══════════════════════════════════════════════════════════════
+[ ] Go to: https://vercel.com
+[ ] Sign up with GitHub
+[ ] Click: Add New... → Project
+[ ] Import: convertx repository
+[ ] Root Directory: frontend
+[ ] Framework: Vite (auto-detected)
+[ ] Add environment variable:
+    VITE_API_URL = [your API URL from Step 3A]/api
+[ ] Click: Deploy
+[ ] Wait 2-3 minutes
+[ ] Copy Frontend URL: _________________________________
+[ ] ✓ Frontend is live!
+
+STEP 5: UPDATE CORS (2 min)
+═══════════════════════════════════════════════════════════════
+[ ] Go to: Render dashboard
+[ ] Click: convertx-api
+[ ] Click: Environment
+[ ] Add: ALLOWED_ORIGINS = [your Frontend URL from Step 4]
+[ ] Click: Save Changes
+[ ] Wait 2-3 minutes
+[ ] ✓ CORS configured!
+
+STEP 6: TEST YOUR APP (3 min)
+═══════════════════════════════════════════════════════════════
+[ ] Visit: [your Frontend URL]
+[ ] Upload a small PDF
+[ ] Wait 30-60 seconds (first time)
+[ ] Download Word document
+[ ] Verify conversion worked
+[ ] ✓ APP IS LIVE!
+
+═══════════════════════════════════════════════════════════════
+  🎉 CONGRATULATIONS! YOUR APP IS LIVE! 🎉
+═══════════════════════════════════════════════════════════════
+
+Your URLs:
+Frontend: _________________________________
+Backend:  _________________________________
+
+Total Time: 30 minutes
+Total Cost: $0/month
+Status: PRODUCTION READY! 🚀
+
+═══════════════════════════════════════════════════════════════

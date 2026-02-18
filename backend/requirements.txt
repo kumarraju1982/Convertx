@@ -1,0 +1,28 @@
+# Web Framework
+Flask==3.0.0
+Flask-CORS==4.0.0
+Flask-RESTful==0.3.10
+Werkzeug==3.0.1
+
+# Task Queue
+celery==5.3.4
+redis==5.0.1
+
+# PDF and Document Processing
+PyMuPDF>=1.26.7
+pytesseract==0.3.10
+python-docx==1.1.0
+Pillow==10.1.0
+numpy==1.26.2
+scipy==1.11.4
+pdf2docx==0.5.9
+
+# Surya OCR (alternative to Tesseract for better accuracy)
+surya-ocr>=0.4.0
+torch>=2.0.0
+transformers==4.36.*
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+hypothesis==6.92.1
