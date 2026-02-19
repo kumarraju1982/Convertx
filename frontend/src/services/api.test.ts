@@ -122,7 +122,7 @@ describe('ConversionAPI', () => {
       };
       const onUploadProgress = jest.fn();
 
-      mockAxiosInstance.post.mockImplementation((url, data, config) => {
+      mockAxiosInstance.post.mockImplementation((_url, _data, config) => {
         // Simulate upload progress
         if (config?.onUploadProgress) {
           config.onUploadProgress({ loaded: 50, total: 100 });
@@ -146,7 +146,7 @@ describe('ConversionAPI', () => {
       };
       const onUploadProgress = jest.fn();
 
-      mockAxiosInstance.post.mockImplementation((url, data, config) => {
+      mockAxiosInstance.post.mockImplementation((_url, _data, config) => {
         if (config?.onUploadProgress) {
           config.onUploadProgress({ loaded: 50, total: undefined });
         }
